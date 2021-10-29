@@ -11,7 +11,7 @@ import { Link } from '@mui/material';
 import { convertBytes } from '../utils/helpers';
 import moment from 'moment';
 
-type Props = { files: any[] };
+type Props = { files: any[]; explorerUrl: string };
 
 const columns = [
   { field: 'id', headerName: 'ID' },
@@ -58,7 +58,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const FileTable: VFC<Props> = ({ files }) => {
+const FileTable: VFC<Props> = ({ files, explorerUrl }) => {
   return (
     <div className='flex flex-col flex-grow mt-5 mb-5' style={{ height: 0 }}>
       <TableContainer component={Paper}>
@@ -89,7 +89,7 @@ const FileTable: VFC<Props> = ({ files }) => {
                 </StyledTableCell>
                 <StyledTableCell>
                   <Link
-                    href={`https://etherscan.io/address/${fileItem.uploader}`}
+                    href={`${explorerUrl}/${fileItem.uploader}`}
                     rel='noopener noreferrer'
                     target='_blank'
                   >

@@ -10,18 +10,19 @@ import { create } from 'ipfs-http-client';
 const ipfs = create({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
 
 const HomePage: VFC = () => {
-  const { isLoading, accounts, isWeb3, web3 } = useWeb3();
+  const { isLoading, accounts, isWeb3, web3, explorerUrl, network } = useWeb3();
 
   const [activeAccount, setActiveAccount] = useState('');
   const [files, setFiles] = useState<any[]>([]);
   const [contract, setContract] = useState<Contract | null>(null);
   const [fileCount, setFileCount] = useState(0);
+  const [availableNetworks, setAvailableNetworks] = useState<string[]>([]);
 
   useEffect(() => {
     if (isWeb3 && web3) {
       (async () => {
         setActiveAccount(accounts[0]);
-
+        getDeployedNetworks();
         const networkId = await web3.eth.net.getId();
         const networkData = (DDrive.networks as any)[networkId!];
 
@@ -65,6 +66,22 @@ const HomePage: VFC = () => {
     }
   };
 
+  const getDeployedNetworks = () => {
+    const ethNetworks: { [key: string]: string } = {
+      '1': 'Mainnet',
+      '3': 'Ropsten',
+      '4': 'Rinkeby',
+      '5': 'Goerli',
+    };
+    const networkArray: string[] = [];
+    for (const networkId in DDrive.networks) {
+      if (ethNetworks[networkId]) {
+        networkArray.push(ethNetworks[networkId]);
+      }
+    }
+    setAvailableNetworks(networkArray);
+  };
+
   const uploadFile = async (
     description: string,
     file: File,
@@ -94,11 +111,21 @@ const HomePage: VFC = () => {
 
   return (
     <Fragment>
-      <Navbar account={activeAccount} />
+      <Navbar
+        account={activeAccount}
+        explorerUrl={explorerUrl}
+        network={network}
+      />
       {isLoading ? (
         <Loading />
       ) : (
-        <Main files={files} uploadFile={uploadFile} fileCount={fileCount} />
+        <Main
+          files={files}
+          uploadFile={uploadFile}
+          fileCount={fileCount}
+          explorerUrl={explorerUrl}
+          availableNetworks={availableNetworks}
+        />
       )}
     </Fragment>
   );

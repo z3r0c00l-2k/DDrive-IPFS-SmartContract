@@ -6,6 +6,8 @@ type state = {
   isWeb3: boolean;
   web3: Web3 | null;
   accounts: string[];
+  network: string;
+  explorerUrl: string;
 };
 
 const useWeb3 = (): state => {
@@ -14,6 +16,8 @@ const useWeb3 = (): state => {
     isWeb3: false,
     web3: null,
     accounts: [],
+    network: '',
+    explorerUrl: '',
   });
 
   useEffect(() => {
@@ -25,12 +29,19 @@ const useWeb3 = (): state => {
           const accounts = await (window as any).ethereum.request({
             method: 'eth_requestAccounts',
           });
+          const network = await web3.eth.net.getNetworkType();
+          const explorerUrl = `https://${
+            network !== 'main' ? `${network}.` : ''
+          }etherscan.io/address`;
+
           setState((prevSate) => ({
             ...prevSate,
             isLoading: false,
             isWeb3: true,
             web3,
             accounts,
+            network,
+            explorerUrl,
           }));
         } else if ((window as any).web3) {
           (window as any).web3 = new Web3((window as any).web3.currentProvider);
@@ -49,7 +60,7 @@ const useWeb3 = (): state => {
     })();
   }, []);
 
-  const { isLoading, isWeb3, web3, accounts } = state;
-  return { isLoading, isWeb3, web3, accounts };
+  const { isLoading, isWeb3, web3, accounts, network, explorerUrl } = state;
+  return { isLoading, isWeb3, web3, accounts, network, explorerUrl };
 };
 export default useWeb3;

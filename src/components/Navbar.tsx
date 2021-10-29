@@ -14,9 +14,9 @@ import { ColorModeContext } from '../App';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
-type Props = { account: string };
+type Props = { account: string; explorerUrl: string; network: string };
 
-const Navbar: FC<Props> = ({ account }) => {
+const Navbar: FC<Props> = ({ account, explorerUrl, network }) => {
   const theme = useTheme();
 
   const { toggleColorMode } = useContext(ColorModeContext);
@@ -28,9 +28,12 @@ const Navbar: FC<Props> = ({ account }) => {
         <Typography variant='h6' component='div' sx={{ flexGrow: 1, ml: 4 }}>
           D-Drive
         </Typography>
+        <Typography component='div' sx={{ mr: 2 }}>
+          Connected Network : {network}
+        </Typography>
         <Tooltip title={account}>
           <Link
-            href={`https://etherscan.io/address/${account}`}
+            href={`${explorerUrl}/${account}`}
             target='_blank'
             color='inherit'
           >

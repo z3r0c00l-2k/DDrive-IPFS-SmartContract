@@ -107,40 +107,6 @@ const FileTable: VFC<Props> = ({ files }) => {
                 </StyledTableCell>
               </StyledTableRow>
             ))}
-            {files.map((fileItem) => (
-              <StyledTableRow key={fileItem.fileId}>
-                <StyledTableCell component='th' scope='row'>
-                  {fileItem.fileId}
-                </StyledTableCell>
-                <StyledTableCell>{fileItem.fileName}</StyledTableCell>
-                <StyledTableCell>{fileItem.fileDescription}</StyledTableCell>
-                <StyledTableCell>{fileItem.fileType}</StyledTableCell>
-                <StyledTableCell>
-                  {convertBytes(fileItem.fileSize)}
-                </StyledTableCell>
-                <StyledTableCell>
-                  {moment.unix(fileItem.uploadTime).format('D/M/Y h:mm:ss A')}
-                </StyledTableCell>
-                <StyledTableCell>
-                  <Link
-                    href={`https://etherscan.io/address/${fileItem.uploader}`}
-                    rel='noopener noreferrer'
-                    target='_blank'
-                  >
-                    {fileItem.uploader.substring(0, 10)}...
-                  </Link>
-                </StyledTableCell>
-                <StyledTableCell>
-                  <Link
-                    href={`https://ipfs.infura.io/ipfs/${fileItem.fileHash}`}
-                    rel='noopener noreferrer'
-                    target='_blank'
-                  >
-                    {fileItem.fileHash.substring(0, 10)}...
-                  </Link>
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
           </TableBody>
         </Table>
       </TableContainer>

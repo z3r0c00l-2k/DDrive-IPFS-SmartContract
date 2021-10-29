@@ -1,37 +1,28 @@
-import { FC } from 'react';
-// import { convertBytes } from '../utils/helpers';
-// import moment from 'moment';
+import { VFC } from 'react';
+import { Container, Card, CardContent, Typography } from '@mui/material';
+import { Buffer } from 'buffer';
+import FileUploadForm from './FileUploadForm';
+import FileTable from './FileTable';
 
-type Props = { files: any; captureFile: any; uploadFile: any };
+type Props = { files: any[]; uploadFile: any; fileCount: number };
 
-const Main: FC<Props> = ({}) => {
-  return (
-    <div className='container-fluid mt-5 text-center'>
-      <div className='row'>
-        <main
-          role='main'
-          className='col-lg-12 ml-auto mr-auto'
-          style={{ maxWidth: '1024px' }}
-        >
-          <div className='content'>
-            <p>&nbsp;</p>
-            <h1>DStorage starter_code</h1>
-            {/* Creatining uploading card ... */}
-            {/* Uploading file... */}
-            <p>&nbsp;</p>
-            {/* Create Table*/}
-            <table
-              className='table-sm table-bordered text-monospace'
-              style={{ width: '1000px', maxHeight: '450px' }}
-            >
-              {/* Set table columns */}
-              {/* Mapping rows... */}
-            </table>
-          </div>
-        </main>
-      </div>
-    </div>
-  );
-};
+export type File = { buffer: Buffer; type: string; name: string };
+
+const Main: VFC<Props> = ({ files, uploadFile, fileCount }) => (
+  <Container className='flex flex-col flex-1'>
+    <Card sx={{ mt: 4 }}>
+      <CardContent>
+        <Typography sx={{ textAlign: 'center' }} gutterBottom variant='h5'>
+          Share File
+        </Typography>
+        <FileUploadForm uploadFile={uploadFile} />
+      </CardContent>
+    </Card>
+    <Typography sx={{ textAlign: 'center', mt: 4 }} gutterBottom variant='h6'>
+      Total Files Uploaded : {fileCount}
+    </Typography>
+    <FileTable files={files} />
+  </Container>
+);
 
 export default Main;

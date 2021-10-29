@@ -1,9 +1,13 @@
 import { FC } from 'react';
-import { AppBar, IconButton, Toolbar, Typography, Button } from '@mui/material';
-import { StorageTwoTone } from '@mui/icons-material';
+import {
+  AppBar,
+  Avatar,
+  Link,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { ReactComponent as StorageBox } from '../assets/bitcoin-storage.svg';
-// import Identicon from 'identicon.js';
-// import box from '../assets/box.png';
 
 type Props = { account: string };
 
@@ -15,9 +19,16 @@ const Navbar: FC<Props> = ({ account }) => {
         <Typography variant='h6' component='div' sx={{ flexGrow: 1, ml: 2 }}>
           D-Drive
         </Typography>
-        <Typography variant='body1' component='div'>
-          {account || '0x0'}
-        </Typography>
+        <Tooltip title={account}>
+          <Link
+            href={`https://etherscan.io/address/${account}`}
+            target='_blank'
+            color='inherit'
+          >
+            {`${account.substring(0, 6)}...${account.substring(38, 42)}`}
+          </Link>
+        </Tooltip>
+        <Avatar sx={{ ml: 2 }} />
       </Toolbar>
     </AppBar>
   );
